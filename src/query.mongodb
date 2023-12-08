@@ -1,0 +1,6 @@
+use("shushufindi")
+
+
+//db.zips.find({ state: "NY"}).count ()
+
+db.barrios.find()

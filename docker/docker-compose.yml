@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+      - 1433:1433
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/nginx/proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+      - ./:/etc/nginx/certs
+  mongodb:
+    image: mongo:5.0
+    container_name: mongodb_container
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jose
+      MONGO_INITDB_ROOT_PASSWORD: jose2127
+    volumes:
+      - ./mongodb_data:/data/db
+
+networks:
+  backend:
+  default:
+    external:
+      name: proxy
